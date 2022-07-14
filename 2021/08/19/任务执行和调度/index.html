@@ -1,0 +1,854 @@
+<!DOCTYPE html>
+<html lang="zh-tw,en,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="greatBrook">
+    
+    <title>
+        
+            任务执行和调度 |
+        
+        Brook&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":["zh-tw","en","default"],"path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#1F69A1","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"风乍起，合当奋意向人生。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Brook&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                CATEGORIES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >
+                                LINKS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">CATEGORIES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">LINKS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">任务执行和调度</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">greatBrook</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-08-19 21:17:31
+    </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/Quartz/">Quartz</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/%E7%BA%BF%E7%A8%8B%E6%B1%A0/">线程池</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.8k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>11 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <p>任务调度组件基于多线程，但凡用多线程，一定会用到线程池，因为创建线程是有开销的，且开销较大。使用线程池来管理线程，能够让线程复用，提高处理能力，节约资源。</p>
+<h2 id="线程池思想概述"><a href="#线程池思想概述" class="headerlink" title="线程池思想概述"></a>线程池思想概述</h2><p>我们使用线程的时候就去创建一个线程，这样实现起来非常简便，但是就会有一个问题：</p>
+<p>如果并发的线程数量很多，并且每个线程都是执行一个时间很短的任务就结束了，这样频繁创建线程就会大大降低系统的效率，因为频繁创建线程和销毁线程需要时间。</p>
+<p>那么有没有一种办法使得线程可以复用，就是执行完一个任务，并不被销毁，而是可以继续执行其他的任务？</p>
+<p>在Java中可以通过线程池来达到这样的效果。</p>
+<h2 id="线程池概念"><a href="#线程池概念" class="headerlink" title="线程池概念"></a>线程池概念</h2><ul>
+<li><strong>线程池：</strong>其实就是一个容纳多个线程的容器，其中的线程可以反复使用，省去了频繁创建线程对象的操作，无需反复创建线程而消耗过多资源。</li>
+</ul>
+<p>​    线程池的工作原理：</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UAjQlROOYSJDFl5/root/content"></p>
+<p>合理利用线程池能够带来三个好处：</p>
+<ol>
+<li>降低资源消耗。减少了创建和销毁线程的次数，每个工作线程都可以被重复利用，可执行多个任务。</li>
+<li>提高响应速度。当任务到达时，任务可以不需要的等到线程创建就能立即执行。</li>
+<li>提高线程的可管理性。可以根据系统的承受能力，调整线程池中工作线线程的数目，防止因为消耗过多的内存，而把服务器累趴下(每个线程需要大约1MB内存，线程开的越多，消耗的内存也就越大，最后死机)。</li>
+</ol>
+<h2 id="线程池的使用"><a href="#线程池的使用" class="headerlink" title="线程池的使用"></a>线程池的使用</h2><p>Java里面线程池的顶级接口是<code>java.util.concurrent.Executor</code>，但是严格意义上讲<code>Executor</code>并不是一个线程池，而只是一个执行线程的工具。真正的线程池接口是<code>java.util.concurrent.ExecutorService</code>。</p>
+<p>要配置一个线程池是比较复杂的，尤其是对于线程池的原理不是很清楚的情况下，很有可能配置的线程池不是较优的，因此在<code>java.util.concurrent.Executors</code>线程工厂类里面提供了一些静态工厂，生成一些常用的线程池。官方建议使用Executors工程类来创建线程池对象。</p>
+<p>Executors类中有个创建线程池的方法如下：</p>
+<ul>
+<li><code>public static ExecutorService newFixedThreadPool(int nThreads)</code>：返回线程池对象。(创建的是有界线程池,也就是池中的线程个数可以指定最大数量)</li>
+</ul>
+<p>获取到了一个线程池ExecutorService 对象，那么怎么使用呢，在这里定义了一个使用线程池对象的方法如下：</p>
+<ul>
+<li><p><code>public Future&lt;?&gt; submit(Runnable task)</code>:获取线程池中的某一个线程对象，并执行</p>
+<blockquote>
+<p>Future接口：用来记录线程任务执行完毕后产生的结果。线程池创建与使用。</p>
+</blockquote>
+</li>
+</ul>
+<p>使用线程池中线程对象的步骤：</p>
+<ol>
+<li>创建线程池对象。</li>
+<li>创建Runnable接口子类对象。(task)</li>
+<li>提交Runnable接口子类对象。(take task)</li>
+<li>关闭线程池(一般不做)。</li>
+</ol>
+<h2 id="JDK线程池"><a href="#JDK线程池" class="headerlink" title="JDK线程池"></a>JDK线程池</h2><pre><code class="Java">public class ThreadPoolTest {
+    private static final Logger logger = LoggerFactory.getLogger(ThreadPoolTest.class);
+    // JDK普通线程池
+    private ExecutorService executorService = Executors.newFixedThreadPool(5);//通过工厂Executors来实例化，实例化后包含五个线程，反复复用这五个线程
+    // JDK可执行定时任务的线程池
+    private ScheduledExecutorService scheduledExecutorService = Executors.newScheduledThreadPool(5);
+    // Spring普通线程池
+    @Autowired
+    private ThreadPoolTaskExecutor taskExecutor;
+    // Spring可执行定时任务的线程池
+    @Autowired
+    private ThreadPoolTaskScheduler taskScheduler;
+    @Autowired
+    private AlphaService alphaService;
+    
+   /* ThreadPoolTest是junit测试方法，其和main方法不一样，如果在main方法里启动线程，该线程不挂掉的话，
+   main会挡着ThreadPoolTest执行，使得main会挡着ThreadPoolTest执行，不会立刻结束。
+    但是junit测试方法 每启动一个子线程，和当前线程是并发的，如果test方法没有逻辑，立刻就结束了，不管启动的线程有没有完成。
+    因此当test方法启动完一个线程以后，等其执行完以后在关闭线程。则让当前主线程sleep（阻塞）一会儿*/
+   private void sleep(long m) {//m单位是毫秒
+       try {
+           Thread.sleep(m);//当前线程阻塞
+       } catch (InterruptedException e) {
+           e.printStackTrace();
+       }
+   }
+
+}
+</code></pre>
+<h3 id="ExecutorService"><a href="#ExecutorService" class="headerlink" title="ExecutorService"></a>ExecutorService</h3><pre><code class="java">// 1.JDK普通线程池
+@Test
+public void testExecutorService() {//需要给线程池一个任务 来使得线程池 分配一个线程去执行。任务即是线程体。
+    Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            logger.debug("Hello ExecutorService");
+        }
+    };
+
+    for (int i = 0; i &lt; 10; i++) {//执行10次
+        executorService.submit(task);//每调用一个submit方法，线程池都会给其分配一个线程以执行线程体。
+    }
+
+    sleep(10000);//不然，线程还没执行完，方法就结束了。1w毫秒就是10s
+}
+</code></pre>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UH5olRNXh6dQqQw/root/content"></p>
+<h3 id="ScheduledExecutorService"><a href="#ScheduledExecutorService" class="headerlink" title="ScheduledExecutorService"></a>ScheduledExecutorService</h3><pre><code class="java">// 2.JDK定时任务线程池（设置时间间隔不断执行，要提供一个线程体）
+@Test
+public void testScheduledExecutorService() {
+    Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            logger.debug("Hello ScheduledExecutorService");
+        }
+    };
+
+    scheduledExecutorService.scheduleAtFixedRate(task, 10000, 1000, TimeUnit.MILLISECONDS);
+    //第一个参数是任务。第二个参数是该任务延迟多少ms才执行。第三个参数是时间间隔ms，第三个参数是声明时间单位TimeUnit.MILLISECONDS
+
+    sleep(30000);
+}
+</code></pre>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UIhyBroVAOfMX2N/root/content"></p>
+<h2 id="Spring线程池"><a href="#Spring线程池" class="headerlink" title="Spring线程池"></a>Spring线程池</h2><p>在application properties中增加</p>
+<pre><code class="xml"># TaskExecutionProperties spring普通线程池的配置
+# 线程池中有几个核心线程
+spring.task.execution.pool.core-size=5
+# 当核心线程不够用，最多扩展到15个
+spring.task.execution.pool.max-size=15
+#queue-capacity指队列容量，当15个线程还是不够用，需要将其放在队列中等候。设置队列能缓冲一百个任务
+spring.task.execution.pool.queue-capacity=100
+
+# TaskSchedulingProperties spring能启动定时任务的线程池的配置
+spring.task.scheduling.pool.size=5
+</code></pre>
+<h3 id="ThreadPoolTaskExecutor"><a href="#ThreadPoolTaskExecutor" class="headerlink" title="ThreadPoolTaskExecutor"></a>ThreadPoolTaskExecutor</h3><pre><code class="java">// Spring普通线程池
+@Autowired
+private ThreadPoolTaskExecutor taskExecutor;
+// 3.Spring普通线程池
+@Test
+public void testThreadPoolTaskExecutor() {
+    Runnable task = new Runnable() {//声明线程体
+        @Override
+        public void run() {
+            logger.debug("Hello ThreadPoolTaskExecutor");
+        }
+    };
+
+    for (int i = 0; i &lt; 10; i++) {
+        taskExecutor.submit(task);
+    }
+
+    sleep(10000);
+}
+</code></pre>
+<p>执行的时候会报错</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UN7bZ2z1ygRZgK9/root/content"></p>
+<pre><code>@Configuration
+@EnableScheduling
+//如果不加EnableScheduling，则表明定时任务没有开启
+
+@EnableAsync//使AlphaService中的@Async注解生效
+public class ThreadPoolConfig {
+}
+</code></pre>
+<p>执行结果：<img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29USWCgTlEPXs4k1r/root/content"></p>
+<p><strong>Spring普通线程池 比jdk线程池更灵活，因为可以设置 核心线程个数，扩展线程个数</strong></p>
+<h3 id="ThreadPoolTaskScheduler"><a href="#ThreadPoolTaskScheduler" class="headerlink" title="ThreadPoolTaskScheduler"></a>ThreadPoolTaskScheduler</h3><pre><code class="java">// Spring可执行定时任务的线程池
+//@Autowired
+//private ThreadPoolTaskScheduler taskScheduler;
+
+// 4.Spring定时任务线程池
+@Test
+public void testThreadPoolTaskScheduler() {
+    Runnable task = new Runnable() {
+        @Override
+        public void run() {
+            logger.debug("Hello ThreadPoolTaskScheduler");
+        }
+    };
+
+    Date startTime = new Date(System.currentTimeMillis() + 10000);//当前时间延迟一万毫秒，就是现在的时间
+    taskScheduler.scheduleAtFixedRate(task, startTime, 1000);//以固定频率执行，执行时间间隔
+
+    sleep(30000);//阻塞三十秒
+}
+</code></pre>
+<p>结果：<img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UW_b0gq-Vu7aLHf/root/content"></p>
+<p>jdk线程池是jdk自带的，spring线程池是spring自带的， 其中ExecutorService和ThreadPoolTaskExecutor是普通线程池。</p>
+<p>ScheduledExecutorService以及ThreadPoolTaskScheduler所创建的线程可以执行定时任务。但是分布式的时候，这俩是有问题的，scheduler不合适，因为scheduler程序运行所依赖的参数都是存在数据库中的，scheduler没有解决分布式的问题。<br>比如，每隔十分钟，删掉一个临时文件，两个都会这样做，会产生一定冲突。<br>jdk和spring的定时任务组件，都是基于内存的，配置多长时间运行一次，配置参数都在内存中，但是服务器1和2内存不共享，不能知道各自正在干嘛，因此会产生一定冲突。因此分布式下用Quartz更多。</p>
+<p>Quartz程序运行所依赖的参数都是存在数据库（DB）里面的，因此不管部署多少个Quartz，都会访问同一个数据库。（服务器可以有多个，但是数据库只有一个）。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UanjULNbCoAQXbA/root/content"></p>
+<p>浏览器把请求发给Nginx，Nginx依据一定策略，选择服务器对请求进行处理，如果是普通请求，则是分配给controller处理。如果改为Quartz，可以对不同的请求进行排队操作。</p>
+<h2 id="分布式定时任务"><a href="#分布式定时任务" class="headerlink" title="分布式定时任务"></a>分布式定时任务</h2><h3 id="Spring-Quartz"><a href="#Spring-Quartz" class="headerlink" title="Spring Quartz"></a>Spring Quartz</h3><p>DB有一套表，需要我们提前创建。这个表就是Quartz 所需要的表<br>该表即为Quartz依赖的表</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UdF3mPl7u1ywGCP/root/content"></p>
+<p>在maven里导入Quartz的包</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UhjBni3rt7-uciA/root/content"></p>
+<pre><code class="xml"> &lt;dependency&gt;
+            &lt;groupId&gt;org.springframework.boot&lt;/groupId&gt;
+            &lt;artifactId&gt;spring-boot-starter-quartz&lt;/artifactId&gt;
+ &lt;/dependency&gt;
+</code></pre>
+<p>然后看看源码：<br>job、Scheduler、jobdetail（用来配置job）、trigger触发器（设置以什么样的频率反复运行）</p>
+<p>通过job接口定义一个任务，通过jobdetail以及trigger接口来配置job，主要做这三个事情。<br>配置好，重新启动，Quartz就会重新启动配置信息，并将读到的配置信息存到数据库（表）中，Quartz以后都会读取表中这些信息，来执行任务。<br>trigger第一次启动服务时用，以后就不用了<br>通过jobdetail配置的信息，都存到这个表里。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29UmQrRwDs2RH705b/root/content"></p>
+<p>任务的名字<br>job的名字<br>job的分组<br>job的描述<br>job对应的类<br>…</p>
+<h3 id="QuartzConfig"><a href="#QuartzConfig" class="headerlink" title="QuartzConfig"></a>QuartzConfig</h3><pre><code class="java">// 配置（仅在第一次被读取到） -&gt; 信息被初始化到数据库 -&gt; quartz访问数据库去调用该任务，不在访问配置文件
+@Configuration
+public class QuartzConfig {
+    //FactoryBean和之前一开始学的IOC 学到的 BeanFactory有本质区别；BeanFactory是整个IOC容器的顶层接口
+    // FactoryBean主要目的是 简化Bean的实例化过程，因为有的Bean实例化过程比较复杂:
+    // 1.通过FactoryBean封装Bean的实例化过程.
+    // 2.将FactoryBean装配到Spring容器里.
+    // 3.将FactoryBean注入给其他的Bean.
+    // 4.该Bean得到的是FactoryBean所管理的对象实例.
+// 配置JobDetail
+// @Bean
+public JobDetailFactoryBean alphaJobDetail() {//Bean的名字是alphaJobDetail。初始化该bean，想当于将其装配到容器中
+    JobDetailFactoryBean factoryBean = new JobDetailFactoryBean();//实例化对象
+    factoryBean.setJobClass(AlphaJob.class);
+    factoryBean.setName("alphaJob");//声明job任务的名字
+    factoryBean.setGroup("alphaJobGroup");//声明任务的组
+    factoryBean.setDurability(true);//声明任务是否长久保存，哪怕任务不再运行。连触发器都没有了，也会一直报存
+    factoryBean.setRequestsRecovery(true);//声明任务是否可恢复
+    return factoryBean;
+}
+
+// 配置Trigger(SimpleTriggerFactoryBean比较简单，每十天要做...； CronTriggerFactoryBean复杂，每个月月底前两天要做...)
+// @Bean
+public SimpleTriggerFactoryBean alphaTrigger(JobDetail alphaJobDetail) {//Trigger依赖于JobDetail，因此需要读取
+    SimpleTriggerFactoryBean factoryBean = new SimpleTriggerFactoryBean();
+    factoryBean.setJobDetail(alphaJobDetail);
+    factoryBean.setName("alphaTrigger");
+    factoryBean.setGroup("alphaTriggerGroup");
+    factoryBean.setRepeatInterval(3000);//多长时间执行一次任务
+    factoryBean.setJobDataMap(new JobDataMap());//Trigger底层需要存储一些状态，新建JobDataMap对象来存储
+    return factoryBean;
+}
+</code></pre>
+<p>测试：<img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29VAFa8eYLWbJCLyJ/root/content"></p>
+<p>Quartz底层也依赖于线程池，线程池有一默认配置，如果想重新配置底层线程池，需要在application properties中进行配置。</p>
+<pre><code class="c"># QuartzProperties
+spring.quartz.job-store-type=jdbc//任务用jdbc来存储
+spring.quartz.scheduler-name=communityScheduler//调度器的名字
+spring.quartz.properties.org.quartz.scheduler.instanceId=AUTO//调度器的id 自动生成
+spring.quartz.properties.org.quartz.jobStore.class=org.quartz.impl.jdbcjobstore.JobStoreTX
+spring.quartz.properties.org.quartz.jobStore.driverDelegateClass=org.quartz.impl.jdbcjobstore.StdJDBCDelegate//驱动StdJDBCDelegate
+spring.quartz.properties.org.quartz.jobStore.isClustered=true//是否采用集群方式，是
+spring.quartz.properties.org.quartz.threadPool.class=org.quartz.simpl.SimpleThreadPool//用org.quartz.simpl.SimpleThreadPool线程池
+spring.quartz.properties.org.quartz.threadPool.threadCount=5//线程数量
+</code></pre>
+<p>做了如上配置以后，<br>表里出现了如下信息：</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29VH7JbtJ1b_m7xBv/root/content"></p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29VIB-YTAd8pUQtyS/root/content"></p>
+<p>新建QuartzTests</p>
+<pre><code>@RunWith(SpringRunner.class)
+@SpringBootTest
+@ContextConfiguration(classes = CommunityApplication.class)
+public class QuartzTests {
+@Autowired
+private Scheduler scheduler;
+
+@Test
+public void testDeleteJob() {
+    try {
+        boolean result = scheduler.deleteJob(new JobKey("alphaJob", "alphaJobGroup"));
+        System.out.println(result);
+    } catch (SchedulerException e) {
+        e.printStackTrace();
+    }
+}
+}
+</code></pre>
+<p>返回true<br>确实删除了<br><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29VMSEVKpwBrm5h7u/root/content"><br>这里面存着不是job，而是scheduler，所以东西还在<br><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29VT4CNbMlAlcQ5ox/root/content"></p>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：任务执行和调度</li>
+        <li>Post author：greatBrook</li>
+        <li>Create time：2021-08-19 21:17:31</li>
+        <li>
+            Post link：https://brookdeng.github.io/2021/08/19/任务执行和调度/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/08/19/%E6%AD%A3%E5%88%99%E8%A1%A8%E8%BE%BE%E5%BC%8F/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">正则表达式</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/08/19/github-hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">github hexo搭建博客</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fas fa-comments">&nbsp;Comments</i>
+    </div>
+    
+
+        
+            
+    <div class="valine-container">
+        <script data-pjax
+                src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+            function loadValine() {
+                new Valine({
+                    el: '#vcomments',
+                    appId: 'ED1l4bFn1KPCAPEcbxixj8Px-9Nh9j0Va',
+                    appKey: 'IjQK1mCRR6zqIQgEpCGKUEBW',
+                    meta: ['nick', 'mail', 'link'],
+                    avatar: 'wavatar',
+                    enableQQ: true,
+                    placeholder: '尽情吐槽吧~QAQ~',
+                    lang: 'zh-tw,en,default'.toLowerCase()
+                });
+
+                function getAuthor(language) {
+                    switch (language) {
+                        case 'en':
+                            return 'Author';
+                        case 'zh-CN':
+                            return '博主';
+                        default:
+                            return 'Master';
+                    }
+                }
+
+                // Add "Author" identify
+                const getValineDomTimer = setInterval(() => {
+                    const vcards = document.querySelectorAll('#vcomments .vcards .vcard');
+                    if (vcards.length > 0) {
+                        let author = 'greatBrook';
+
+                        if (author) {
+                            for (let vcard of vcards) {
+                                const vnick_dom = vcard.querySelector('.vhead .vnick');
+                                const vnick = vnick_dom.innerHTML;
+                                if (vnick === author) {
+                                    vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                                }
+                            }
+                        }
+                        clearInterval(getValineDomTimer);
+                    } else {
+                        clearInterval(getValineDomTimer);
+                    }
+                }, 2000);
+            }
+
+            if ('true') {
+                const loadValineTimeout = setTimeout(() => {
+                    loadValine();
+                    clearTimeout(loadValineTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadValine);
+            }
+        </script>
+    </div>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2017</span>&nbsp;-&nbsp;
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">greatBrook</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        Visitor Count&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        Totalview&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%80%9D%E6%83%B3%E6%A6%82%E8%BF%B0"><span class="nav-text">线程池思想概述</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E6%A6%82%E5%BF%B5"><span class="nav-text">线程池概念</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%BA%BF%E7%A8%8B%E6%B1%A0%E7%9A%84%E4%BD%BF%E7%94%A8"><span class="nav-text">线程池的使用</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#JDK%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-text">JDK线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ExecutorService"><span class="nav-text">ExecutorService</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ScheduledExecutorService"><span class="nav-text">ScheduledExecutorService</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Spring%E7%BA%BF%E7%A8%8B%E6%B1%A0"><span class="nav-text">Spring线程池</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadPoolTaskExecutor"><span class="nav-text">ThreadPoolTaskExecutor</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#ThreadPoolTaskScheduler"><span class="nav-text">ThreadPoolTaskScheduler</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%88%86%E5%B8%83%E5%BC%8F%E5%AE%9A%E6%97%B6%E4%BB%BB%E5%8A%A1"><span class="nav-text">分布式定时任务</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#Spring-Quartz"><span class="nav-text">Spring Quartz</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#QuartzConfig"><span class="nav-text">QuartzConfig</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/code-copy.js"></script>
+
+
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/toc.js"></script>
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

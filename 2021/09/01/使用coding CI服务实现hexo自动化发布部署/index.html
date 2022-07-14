@@ -1,0 +1,763 @@
+<!DOCTYPE html>
+<html lang="zh-tw,en,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="greatBrook">
+    
+    <title>
+        
+            使用coding CI服务实现hexo自动化发布部署 |
+        
+        Brook&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":["zh-tw","en","default"],"path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#1F69A1","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"风乍起，合当奋意向人生。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Brook&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                CATEGORIES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >
+                                LINKS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">CATEGORIES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">LINKS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">使用coding CI服务实现hexo自动化发布部署</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">greatBrook</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-09-01 22:57:04
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/Hexo/">Hexo</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/hexo/">hexo</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/CI/">CI</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/Coding/">Coding</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/git/">git</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>1.7k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>6 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="引言"><a href="#引言" class="headerlink" title="引言"></a>引言</h1><p>hexo是一个操作简单方便的静态网页式博客，但是这也带来了几个问题。</p>
+<ul>
+<li>每次<code>hexo new post ""</code>写作好以后，都要进行生成网页部署网页的操作，这种重复操作是程序员极为讨厌的行为。</li>
+<li>同样，每次想要在新的设备上写作就更加麻烦，新设备上要和原设备上有一样的环境，重新配置环境的时候还有可能出现各种问题。花费了一段时间配好环境，开始写作了，又要经历上一个问题。</li>
+</ul>
+<p>而各家的持续集成服务就能解决这样的问题，这里推荐coding的CI服务，每个月有1000次的免费持续集成次数，而且提供的服务器配置也很可以了。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29VU3qY_5Un28Ajdj/root/content"></p>
+<p>下面介绍一些基本概念，不需要的朋友可以直接向下调到教程。</p>
+<h1 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h1><h2 id="持续集成"><a href="#持续集成" class="headerlink" title="持续集成"></a>持续集成</h2><p>在软件工程中，持续集成（CI）是指将所有开发者的工作副本每天多次合并到主干的做法。持续集成在现代软件研发流程中，扮演了十分重要的角色。通过对每次提交的代码进行自动化的单元测试、代码检查、编译构建、契约测试，甚至自动部署，能够大大降低了开发人员的工作负担，减少了许多不必要的重复劳动，持续提升代码质量和开发效率。毫无疑问，持续集成是开发者和研发团队的福音。</p>
+<p>持续集成是指软件发布流程的构建和单元测试阶段。提交的每一个修订都会触发自动化的构建和测试操作。</p>
+<p>采用<a class="link" target="_blank" rel="noopener" href="https://aws.amazon.com/cn/devops/continuous-delivery/">持续交付<i class="fas fa-external-link-alt"></i></a>时，系统会自动构建、测试并准备代码变更，以便发布到生产环境中。持续交付通过在构建阶段后将所有代码变更部署到测试环境和/或生产环境中，实现对持续集成的扩展。</p>
+<p>当然我们想要实现自动部署并不需要完整的持续集成功能，只需要自动构建。</p>
+<h2 id="Jenkins"><a href="#Jenkins" class="headerlink" title="Jenkins"></a>Jenkins</h2><p>Jenkins 是一个开源软件项目，是基于 Java 开发的一种持续集成工具，用于监控持续重复的工作，旨在提供一个开放易用的软件平台，使软件的持续集成变成可能。</p>
+<p>没错，它就是一个具体的持续集成解决方案。基于 Java 实现。 可以实现：</p>
+<ol>
+<li>持续版本发布/测试；</li>
+<li>监控外部调用执行的工作；</li>
+</ol>
+<h1 id="教程"><a href="#教程" class="headerlink" title="教程"></a>教程</h1><h2 id="工具"><a href="#工具" class="headerlink" title="工具"></a>工具</h2><ol>
+<li>能够正常发布使用的hexo本地项目。</li>
+<li>coding账户</li>
+<li>Git</li>
+</ol>
+<h2 id="coding访问令牌"><a href="#coding访问令牌" class="headerlink" title="coding访问令牌"></a>coding访问令牌</h2><p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29Vbp_Rej8lA87Vvp/root/content"></p>
+<p>新建访问令牌</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29Vfoo1OCCjuuJ2xn/root/content"></p>
+<p>保存好令牌和用户名备用。</p>
+<h2 id="coding项目"><a href="#coding项目" class="headerlink" title="coding项目"></a>coding项目</h2><p>本项目中需要一个git仓库，可以使用github||gitee||coding。建议使用coding，因为是采用的coding的集成服务，同平台稳定性高一些。</p>
+<p>首先直接创建一个全功能DevOps项目。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29Viw44joEveG6NbD/root/content"></p>
+<p>进入项目</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29Vk3MMRsfrRuNG-3/root/content"></p>
+<p>进入代码仓库，新建一个仓库，因为里面会有配置文件，含有密码等敏感信息，请选择私有仓库。</p>
+<p>创建完成后本地文件夹绑定远程仓库。</p>
+<pre><code>git remote set-url origin https://e.coding.net/仓库地址.git
+</code></pre>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29VprZXjOY_dwW_9i/root/content"></p>
+<p>本地hexo目录，编辑——config.yml配置文件。找到deploy</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29Vsy3p2dQ5xQBLti/root/content"></p>
+<p>采用coding 免费CI构建部署时候每次都是一个新的环境，相当于新的设备，每次都要输入凭证才可以成功部署。我是同时部署在github和gitee，格式为：</p>
+<pre><code> github: https://username:token@github.com/项目地址.git
+ gitee: https://用户名:密码@gitee.com/项目地址.git
+</code></pre>
+<p>github需要采用用户名加token的方式访问，不要使用密码！不要使用密码！会构建失败！</p>
+<h3 id="获取token"><a href="#获取token" class="headerlink" title="获取token"></a>获取token</h3><p>在<a class="link" target="_blank" rel="noopener" href="https://github.com登录你的帐号,登录以后点击右上角你的头像的settings/">https://github.com登录你的帐号，登录以后点击右上角你的头像的Settings<i class="fas fa-external-link-alt"></i></a></p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29Vyxwy2n0RbzsdAK/root/content"></p>
+<p>2、 点击Developer settings下的Personal access tokens</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29V2U_bRddj1_cs1q/root/content"></p>
+<p>3、点击<a class="link" target="_blank" rel="noopener" href="https://github.com/settings/tokens/new%E8%BF%99%E4%B8%AA%E8%B6%85%E9%93%BE%E6%8E%A5%EF%BC%8C%E5%B0%B1%E6%98%AF%E5%88%9B%E5%BB%BA%E4%BD%A0%E7%9A%84token%E3%80%82">https://github.com/settings/tokens/new这个超链接，就是创建你的token。<i class="fas fa-external-link-alt"></i></a></p>
+<p>!<img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29V4tTyGS6fFDkHBJ/root/content"></p>
+<p>4、在Token description中随便填一个描述名称，下面的复选框是你这个token需要的权限，全部勾上就可以了。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29V-7kAJBkvBPH6m2/root/content"></p>
+<p>然后点击下面这个绿色的按钮：</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29WDe8061HpMLmCaT/root/content"></p>
+<p>5、下面这个就是你的token了，可以直接复制使用。将其填入配置文件。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29WHFpK3ICtyWV8Rv/root/content"></p>
+<h2 id="配置持续集成"><a href="#配置持续集成" class="headerlink" title="配置持续集成"></a>配置持续集成</h2><p>进入coding项目选择持续集成–构建计划–创建构建计划</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29WJa2YrVolLg-zO_/root/content"></p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29WOv-k2e9fNvyg4w/root/content"></p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29WR83hFKnGmy4xGs/root/content"></p>
+<p>上文提到的仓库是新建了coding仓库，在代码仓库中选择你创建的仓库，如果你是放在githu或者其他仓库服务，请选择相应的仓库并授权。之后点击确定。</p>
+<p>之后在流程设置中进行设置。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29WVC0V5czptZfjHZ/root/content"></p>
+<p>下面贴上代码</p>
+<pre><code>pipeline {
+    agent any
+    stages  {
+       stage("pull") {
+            steps {
+               sh 'ls'
+              sh 'git config --global user.name "username"'  
+             sh 'git config --global user.email "email"'
+              sh 'ls'
+              sh 'git clone https://用户名:令牌@e.coding.net/仓库地址.git .'//输入上面提到的coding用户名和令牌
+            }
+        
+        }
+        stage("hexo")
+         {
+           steps
+           {
+              sh 'npm install -g hexo-cli'  
+              sh 'npm install hexo --save'
+              //如果你的hexo项目有其他特别功能需要的服务，可以在此添加相应指令
+           }
+         }
+         stage("发布")
+         {
+             steps
+           {
+           sh 'hexo cl'  //hexo clean
+           sh 'hexo g'  //hexo generate
+           
+           sh 'hexo d'  //hexo deploy
+           }
+         }
+        
+    }
+}
+</code></pre>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29WZ2nB-Itjh-A3bg/root/content"></p>
+<p>开启缓存，加快部署速度。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29W3QgSMazHvn3V1l/root/content"></p>
+<p>之后就可以构建了，确认上述操作无误后。点击保存。</p>
+<h2 id="自动部署"><a href="#自动部署" class="headerlink" title="自动部署"></a>自动部署</h2><p>将hexo本地项目git push到你绑定的的仓库，coding就会自动帮你构建啦。</p>
+<p>成功截图。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29W7qbi9YcW5TzN_d/root/content"></p>
+<h1 id="常见问题"><a href="#常见问题" class="headerlink" title="常见问题"></a>常见问题</h1><p>1.</p>
+<p>fatal: unable to access ‘<a class="link" target="_blank" rel="noopener" href="https://-----@github.com/----.git/'">https://-----@github.com/----.git/'<i class="fas fa-external-link-alt"></i></a>: Failed to connect to  port 443: Connection timed out</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29W_22XZCZiYQNEkb/root/content"></p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29XCPcX9ipQ21MqyX/root/content"></p>
+<p>一般是config文件中部署设置的用户名或密码错误。</p>
+<p>2.fatal: could not read Username for ‘<a class="link" target="_blank" rel="noopener" href="https://gitee.com/">https://gitee.com<i class="fas fa-external-link-alt"></i></a>‘: No such device or address</p>
+<p>同上 用户名错误</p>
+<p>3.!<img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29XGCtK64F8MTW7An/root/content"></p>
+<p>将config中highlight enable改为false</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29XJusC-zdtbc8Kut/root/content"></p>
+<p>如有疑问欢迎与我沟通。</p>
+<p>我的博客：</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://brook2bubble.gitee.io/">https://brook2bubble.gitee.io/<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://brookdeng.github.io/">https://brookdeng.github.io/<i class="fas fa-external-link-alt"></i></a></p>
+<h1 id="多端协作"><a href="#多端协作" class="headerlink" title="多端协作"></a>多端协作</h1><p>关于多端写作，网上有Hexo同步语雀文章，感兴趣的可以搜一搜看一看，但是这样的方法会导致每次写作都要使用语雀来写作，配置起来也更加麻烦。</p>
+<h3 id="常用电脑"><a href="#常用电脑" class="headerlink" title="常用电脑"></a>常用电脑</h3><p>写作后直接push到仓库</p>
+<h3 id="其他电脑"><a href="#其他电脑" class="headerlink" title="其他电脑"></a>其他电脑</h3><p>编辑md文档后，上传到仓库_post文件夹。注意文档格式。</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29XNLGVt9_T3YojyG/root/content"></p>
+<p>md文档头文件</p>
+<pre><code>---
+title: 使用coding CI服务实现hexo自动化发布部署
+date: yyyy-MM-dd HH:mm:ss
+categories: [Hexo]
+tags: [CI,Coding,hexo,git]
+
+---
+</code></pre>
+<h3 id="手机端"><a href="#手机端" class="headerlink" title="手机端"></a>手机端</h3><p>同上，比较麻烦，不过也很少有手机写博客的吧。</p>
+<blockquote>
+<h1 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h1><ol>
+<li><a class="link" target="_blank" rel="noopener" href="https://help.coding.net/docs/ci/intro.html">持续集成介绍<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="http://www.misaka10013.cn/p/1967088261.html">hexo利用coding自动化持续集成云端部署多平台<i class="fas fa-external-link-alt"></i></a></li>
+<li><a class="link" target="_blank" rel="noopener" href="https://www.cnblogs.com/antmoe/p/12287711.html">Hexo+coding实现自动化部署<i class="fas fa-external-link-alt"></i></a></li>
+</ol>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：使用coding CI服务实现hexo自动化发布部署</li>
+        <li>Post author：greatBrook</li>
+        <li>Create time：2021-09-01 22:57:04</li>
+        <li>
+            Post link：https://brookdeng.github.io/2021/09/01/使用coding CI服务实现hexo自动化发布部署/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/09/07/%E7%BA%BF%E4%B8%8Akafka%E9%97%AE%E9%A2%98Timeout/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">线上kafka问题Timeout</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/08/20/FactoryBean%E5%92%8CBeanFactory%E7%9A%84%E5%8C%BA%E5%88%AB/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">FactoryBean和BeanFactory的区别</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fas fa-comments">&nbsp;Comments</i>
+    </div>
+    
+
+        
+            
+    <div class="valine-container">
+        <script data-pjax
+                src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+            function loadValine() {
+                new Valine({
+                    el: '#vcomments',
+                    appId: 'ED1l4bFn1KPCAPEcbxixj8Px-9Nh9j0Va',
+                    appKey: 'IjQK1mCRR6zqIQgEpCGKUEBW',
+                    meta: ['nick', 'mail', 'link'],
+                    avatar: 'wavatar',
+                    enableQQ: true,
+                    placeholder: '尽情吐槽吧~QAQ~',
+                    lang: 'zh-tw,en,default'.toLowerCase()
+                });
+
+                function getAuthor(language) {
+                    switch (language) {
+                        case 'en':
+                            return 'Author';
+                        case 'zh-CN':
+                            return '博主';
+                        default:
+                            return 'Master';
+                    }
+                }
+
+                // Add "Author" identify
+                const getValineDomTimer = setInterval(() => {
+                    const vcards = document.querySelectorAll('#vcomments .vcards .vcard');
+                    if (vcards.length > 0) {
+                        let author = 'greatBrook';
+
+                        if (author) {
+                            for (let vcard of vcards) {
+                                const vnick_dom = vcard.querySelector('.vhead .vnick');
+                                const vnick = vnick_dom.innerHTML;
+                                if (vnick === author) {
+                                    vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                                }
+                            }
+                        }
+                        clearInterval(getValineDomTimer);
+                    } else {
+                        clearInterval(getValineDomTimer);
+                    }
+                }, 2000);
+            }
+
+            if ('true') {
+                const loadValineTimeout = setTimeout(() => {
+                    loadValine();
+                    clearTimeout(loadValineTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadValine);
+            }
+        </script>
+    </div>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2017</span>&nbsp;-&nbsp;
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">greatBrook</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        Visitor Count&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        Totalview&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%BC%95%E8%A8%80"><span class="nav-text">引言</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9F%BA%E6%9C%AC%E6%A6%82%E5%BF%B5"><span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90"><span class="nav-text">持续集成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Jenkins"><span class="nav-text">Jenkins</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E6%95%99%E7%A8%8B"><span class="nav-text">教程</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%B7%A5%E5%85%B7"><span class="nav-text">工具</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#coding%E8%AE%BF%E9%97%AE%E4%BB%A4%E7%89%8C"><span class="nav-text">coding访问令牌</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#coding%E9%A1%B9%E7%9B%AE"><span class="nav-text">coding项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E8%8E%B7%E5%8F%96token"><span class="nav-text">获取token</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AE%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90"><span class="nav-text">配置持续集成</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E8%87%AA%E5%8A%A8%E9%83%A8%E7%BD%B2"><span class="nav-text">自动部署</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%B8%B8%E8%A7%81%E9%97%AE%E9%A2%98"><span class="nav-text">常见问题</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%A4%9A%E7%AB%AF%E5%8D%8F%E4%BD%9C"><span class="nav-text">多端协作</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%B8%B8%E7%94%A8%E7%94%B5%E8%84%91"><span class="nav-text">常用电脑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%85%B6%E4%BB%96%E7%94%B5%E8%84%91"><span class="nav-text">其他电脑</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E6%89%8B%E6%9C%BA%E7%AB%AF"><span class="nav-text">手机端</span></a></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%8F%82%E8%80%83"><span class="nav-text">参考</span></a></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/code-copy.js"></script>
+
+
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/toc.js"></script>
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>

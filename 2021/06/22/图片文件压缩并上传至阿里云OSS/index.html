@@ -1,0 +1,933 @@
+<!DOCTYPE html>
+<html lang="zh-tw,en,default">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1">
+    <meta name="keywords" content="Hexo Theme Keep">
+    <meta name="description" content="Hexo Theme Keep">
+    <meta name="author" content="greatBrook">
+    
+    <title>
+        
+            图片文件压缩并上传至阿里云OSS |
+        
+        Brook&#39;s Blog
+    </title>
+    
+<link rel="stylesheet" href="/css/style.css">
+
+    <link rel="shortcut icon" href="/images/logo.svg">
+    <link rel="stylesheet" href="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/css/font-awesome.min.css">
+    <script id="hexo-configurations">
+    let KEEP = window.KEEP || {};
+    KEEP.hexo_config = {"hostname":"example.com","root":"/","language":["zh-tw","en","default"],"path":"search.json"};
+    KEEP.theme_config = {"toc":{"enable":true,"number":false,"expand_all":true,"init_open":true},"style":{"primary_color":"#1F69A1","avatar":"/images/avatar.svg","favicon":"/images/logo.svg","article_img_align":"left","left_side_width":"260px","content_max_width":"920px","hover":{"shadow":true,"scale":false},"first_screen":{"enable":true,"background_img":"/images/bg.svg","description":"风乍起，合当奋意向人生。"},"scroll":{"progress_bar":{"enable":false},"percent":{"enable":true}}},"local_search":{"enable":true,"preload":true},"code_copy":{"enable":true,"style":"mac"},"pjax":{"enable":true},"lazyload":{"enable":false},"version":"3.4.3"};
+    KEEP.language_ago = {"second":"%s seconds ago","minute":"%s minutes ago","hour":"%s hours ago","day":"%s days ago","week":"%s weeks ago","month":"%s months ago","year":"%s years ago"};
+  </script>
+<meta name="generator" content="Hexo 5.4.2">
+<style>.github-emoji { position: relative; display: inline-block; width: 1.2em; min-height: 1.2em; overflow: hidden; vertical-align: top; color: transparent; }  .github-emoji > span { position: relative; z-index: 10; }  .github-emoji img, .github-emoji .fancybox { margin: 0 !important; padding: 0 !important; border: none !important; outline: none !important; text-decoration: none !important; user-select: none !important; cursor: auto !important; }  .github-emoji img { height: 1.2em !important; width: 1.2em !important; position: absolute !important; left: 50% !important; top: 50% !important; transform: translate(-50%, -50%) !important; user-select: none !important; cursor: auto !important; } .github-emoji-fallback { color: inherit; } .github-emoji-fallback img { opacity: 0 !important; }</style>
+<link rel="alternate" href="/atom.xml" title="Hexo" type="application/atom+xml">
+</head>
+
+
+<body>
+<div class="progress-bar-container">
+    
+
+    
+        <span class="pjax-progress-bar"></span>
+        <span class="pjax-progress-icon">
+            <i class="fas fa-circle-notch fa-spin"></i>
+        </span>
+    
+</div>
+
+
+<main class="page-container">
+
+    
+
+    <div class="page-main-content">
+
+        <div class="page-main-content-top">
+            <header class="header-wrapper">
+
+    <div class="header-content">
+        <div class="left">
+            
+            <a class="logo-title" href="/">
+                Brook&#39;s Blog
+            </a>
+        </div>
+
+        <div class="right">
+            <div class="pc">
+                <ul class="menu-list">
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/"
+                            >
+                                HOME
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/archives"
+                            >
+                                ARCHIVES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/categories"
+                            >
+                                CATEGORIES
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/links"
+                            >
+                                LINKS
+                            </a>
+                        </li>
+                    
+                        <li class="menu-item">
+                            <a class=""
+                               href="/about"
+                            >
+                                ABOUT
+                            </a>
+                        </li>
+                    
+                    
+                        <li class="menu-item search search-popup-trigger">
+                            <i class="fas fa-search"></i>
+                        </li>
+                    
+                </ul>
+            </div>
+            <div class="mobile">
+                
+                    <div class="icon-item search search-popup-trigger"><i class="fas fa-search"></i></div>
+                
+                <div class="icon-item menu-bar">
+                    <div class="menu-bar-middle"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="header-drawer">
+        <ul class="drawer-menu-list">
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/">HOME</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/archives">ARCHIVES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/categories">CATEGORIES</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/links">LINKS</a>
+                </li>
+            
+                <li class="drawer-menu-item flex-center">
+                    <a class=""
+                       href="/about">ABOUT</a>
+                </li>
+            
+        </ul>
+    </div>
+
+    <div class="window-mask"></div>
+
+</header>
+
+
+        </div>
+
+        <div class="page-main-content-middle">
+
+            <div class="main-content">
+
+                
+                    <div class="fade-in-down-animation">
+    <div class="article-content-container">
+
+        <div class="article-title">
+            <span class="title-hover-animation">图片文件压缩并上传至阿里云OSS</span>
+        </div>
+
+        
+            <div class="article-header">
+                <div class="avatar">
+                    <img src="/images/avatar.svg">
+                </div>
+                <div class="info">
+                    <div class="author">
+                        <span class="name">greatBrook</span>
+                        
+                            <span class="author-label">Lv3</span>
+                        
+                    </div>
+                    <div class="meta-info">
+                        <div class="article-meta-info">
+    <span class="article-date article-meta-item">
+        <i class="fas fa-edit"></i>&nbsp;2021-06-22 14:07:51
+    </span>
+    
+        <span class="article-categories article-meta-item">
+            <i class="fas fa-folder"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/categories/%E9%A1%B9%E7%9B%AE/">项目</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+    
+        <span class="article-tags article-meta-item">
+            <i class="fas fa-tags"></i>&nbsp;
+            <ul>
+                
+                    <li>
+                        <a href="/tags/aliyun/">aliyun</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/oss/">oss</a>&nbsp;
+                    </li>
+                
+                    <li>
+                        | <a href="/tags/project/">project</a>&nbsp;
+                    </li>
+                
+            </ul>
+        </span>
+    
+
+    
+    
+        <span class="article-wordcount article-meta-item">
+            <i class="fas fa-file-word"></i>&nbsp;<span>2.3k Words</span>
+        </span>
+    
+    
+        <span class="article-min2read article-meta-item">
+            <i class="fas fa-clock"></i>&nbsp;<span>10 Mins</span>
+        </span>
+    
+    
+        <span class="article-pv article-meta-item">
+            <i class="fas fa-eye"></i>&nbsp;<span id="busuanzi_value_page_pv"></span>
+        </span>
+    
+</div>
+
+                    </div>
+                </div>
+            </div>
+        
+
+        <div class="article-content markdown-body">
+            <h1 id="图片处理"><a href="#图片处理" class="headerlink" title="图片处理"></a>图片处理</h1><h2 id="Thumbnails"><a href="#Thumbnails" class="headerlink" title="Thumbnails"></a>Thumbnails</h2><p>在进行Java开发时可以使用Thumbnails工具类对图片进行处理，旋转、裁剪、格式转换、加水印等。</p>
+<h3 id="使用步骤"><a href="#使用步骤" class="headerlink" title="使用步骤"></a>使用步骤</h3><h4 id="导包"><a href="#导包" class="headerlink" title="导包"></a>导包</h4><pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;net.coobird&lt;/groupId&gt;
+    &lt;artifactId&gt;thumbnailator&lt;/artifactId&gt;
+    &lt;version&gt;0.4.8&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h4 id="方法"><a href="#方法" class="headerlink" title="方法"></a>方法</h4><h5 id="1-读入源图片"><a href="#1-读入源图片" class="headerlink" title="1.读入源图片"></a>1.读入源图片</h5><p>能够批量处理，多个文件或者文件夹:</p>
+<p><code>Thumbnails.of(BufferedImage... images)</code> 从<code>BufferedImage</code>读入源；</p>
+<p><code>Thumbnails.of(File... files)</code> 从文件或者文件夹读入源；</p>
+<p><code>Thumbnails.of(InputStream... inputStreams)</code> 从流读入源；</p>
+<p><code>Thumbnails.of(String... files)</code> </p>
+<p><code>Thumbnails.of(URL... urls)</code> </p>
+<h5 id="2-设置大小，按比例或者拉伸"><a href="#2-设置大小，按比例或者拉伸" class="headerlink" title="2.设置大小，按比例或者拉伸"></a>2.设置大小，按比例或者拉伸</h5><p><code>.size(int width, int height)</code> 按比例，使原图撑满size大小；</p>
+<p><code>.width(int width)</code> 设置宽，高按比例；</p>
+<p><code>.height(int height)</code> 设置高，宽按比例；</p>
+<p><code>.forceSize(int width, int height)</code> 设置宽高，不按比例，会按照设置的宽高拉伸；</p>
+<p><code>.scale(double scale)</code> 按比例缩放，0~1缩小，1原比例，&gt;1放大；</p>
+<p><code>.scale(double scaleWidth, double scaleHeight)</code> 长宽各自设置比例，会拉伸；</p>
+<p><code>.scalingMode(ScalingMode config)</code> 缩放模式（ScalingMode枚举BICUBIC、BILINEAR、PROGRESSIVE_BILINEAR）；</p>
+<p><code>.keepAspectRatio(boolean keep)</code> 设置是否按比例，false不按比例；</p>
+<p><strong>注</strong>：size、width/height、scale、forceSize不能并用；size至关于width+height；forceSize关于设置长款+keepAspectRatio=false，因此forceSize不能跟其余设置长款属性、keepAspectRatio并用；</p>
+<h5 id="3-剪裁"><a href="#3-剪裁" class="headerlink" title="3.剪裁"></a>3.剪裁</h5><p><code>.sourceRegion(int x, int y, int width, int height)</code> 剪裁原图，坐标x,y起始，剪裁出宽度width高度height的图像，x向右为正，y向下为正，width（向右）和height（向下）必须大于0；</p>
+<p><code>.sourceRegion(Position position, int width, int height)</code> 剪裁原图，区域位置position可用Positions枚举的9个位置或者实现Position接口的实现类；</p>
+<p><code>.sourceRegion(Position position, Size size)</code> </p>
+<p><code>.sourceRegion(Rectangle region)</code> </p>
+<p><code>.sourceRegion(Region sourceRegion)</code> </p>
+<p><code>.crop(Position position)</code> 剪裁生成的缩略图，按照size设定剪裁；</p>
+<h5 id="4-旋转"><a href="#4-旋转" class="headerlink" title="4.旋转"></a>4.旋转</h5><p><code>.rotate(double angle)</code> 旋转角度，顺时针为正；</p>
+<h5 id="5-水印"><a href="#5-水印" class="headerlink" title="5.水印"></a>5.水印</h5><p><code>.watermark(BufferedImage image)</code> 中心位置50%透明度设置水印；</p>
+<p><code>.watermark(BufferedImage image, float opacity)</code> 中心位置，opacity的不透明度设置水印（0.0&lt;=opacity&lt;=1.0）；</p>
+<p><code>.watermark(Position position, BufferedImage image, float opacity)</code> 在position位置，opacity不透明度设置水印；</p>
+<p><code>.watermark(Watermark w)</code> </p>
+<h5 id="6-质量"><a href="#6-质量" class="headerlink" title="6.质量"></a>6.质量</h5><p><code>.outputQuality(double quality)</code> 质量0.0&lt;=quality&lt;=1.0；</p>
+<p><code>.outputQuality(float quality)</code> </p>
+<h5 id="7-输出格式"><a href="#7-输出格式" class="headerlink" title="7.输出格式"></a>7.输出格式</h5><p><code>.outputFormat(String format)</code> 设置输出格式（可用<code>ImageIO.getWriterFormatNames()</code>得到支持的格式），[JPG, jpg, bmp, BMP, gif, GIF, WBMP, png, PNG, wbmp, jpeg, JPEG]；</p>
+<p><code>.outputFormatType(String formatType)</code> </p>
+<p><code>.useOriginalFormat()</code> 使用原图格式；</p>
+<h5 id="8-输出图片"><a href="#8-输出图片" class="headerlink" title="8.输出图片"></a>8.输出图片</h5><p><code>.asBufferedImage()</code> 返回<code>BufferedImage</code>对象；</p>
+<p><code>.asBufferedImages()</code> 返回多个<code>BufferedImage</code>对象；</p>
+<p><code>.asFiles(Rename rename)</code> 返回文件列表，并按照重命名规则生成文件（Rename抽象类属性：Rename.NO_CHANGE 名称不变，Rename.PREFIX_DOT_THUMBNAIL 名称前缀“thumbnail.”，Rename.PREFIX_HYPHEN_THUMBNAIL 名称前缀“thumbnail-”，Rename.SUFFIX_DOT_THUMBNAIL 名称后缀“.thumbnail”，Rename.SUFFIX_HYPHEN_THUMBNAIL 名称后缀“-thumbnail”）；</p>
+<p><code>.asFiles(File destinationDir, Rename rename)</code> 返回文件列表，并按照指定的重命名规则生成到指定目录里（文件夹要存在）；</p>
+<p><code>.asFiles(Iterable&lt;File&gt; iterable)</code> </p>
+<p><code>.toFile(File outFile)</code> 无返回，写入文件里（若是没有后缀名会自动添加，下同）；</p>
+<p><code>.toFile(String outFilepath)</code> </p>
+<p><code>.toFiles(File destinationDir, Rename rename)</code> 无返回，按照重命名规则生成到文件夹里；</p>
+<p><code>.toFiles(Iterable&lt;File&gt; iterable)</code> </p>
+<p><code>.toFiles(Rename rename)</code> </p>
+<p><code>.toOutputStream(OutputStream os)</code> 无返回，写入outputStream里；</p>
+<p><code>.toOutputStreams(Iterable&lt;? extends OutputStream&gt; iterable)</code> </p>
+<p><code>.allowOverwrite(boolean allowOverwrite)</code> 设置是否覆盖已存在的文件（只对toFile、toFiles、asFiles有效）；</p>
+<h5 id="示例："><a href="#示例：" class="headerlink" title="示例："></a>示例：</h5><pre><code class="Java">Thumbnails.of(image).size(200, 300).toFile(filePathAndName);//指定大小进行缩放
+Thumbnails.of(image).scale(0.25f).toFile(filePathAndName);//指定比例进行缩放
+Thumbnails.of(image).size(120, 120).keepAspectRatio(false).toFile(filePathAndName);//不按照比例指定大小进行缩放
+.rotate(90)//旋转   rotate(角度),正数：顺时针 负数：逆时针
+.watermark(Positions.BOTTOM_RIGHT, ImageIO.read(new File("images/watermark.png")), 0.5f)  // watermark(位置，水印图，透明度)
+.sourceRegion()  // 裁剪
+.outputFormat("png")  //转化图像格式
+Thumbnails.of(image).scale(0.25f).toOutputStream(os); //输出到OutputStream
+Thumbnails.of(image).scale(0.25f).asBufferedImage();  //输出到BufferedImage
+</code></pre>
+<h1 id="阿里云OSS文件上传"><a href="#阿里云OSS文件上传" class="headerlink" title="阿里云OSS文件上传"></a>阿里云OSS文件上传</h1><h2 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h2><p>阿里云对象存储服务，简称 OSS，是一种面向海量数据规模的分布式存储服务。</p>
+<h2 id="注册开通略"><a href="#注册开通略" class="headerlink" title="注册开通略"></a>注册开通略</h2><h2 id="配置OSS"><a href="#配置OSS" class="headerlink" title="配置OSS"></a>配置OSS</h2><p>AccessKey</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29XReyHZPQ03RifSc/root/content"></p>
+<p>创建Bucket </p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29mALscR5FV7ZmMQH/root/content"></p>
+<h2 id="学习使用API"><a href="#学习使用API" class="headerlink" title="学习使用API"></a>学习使用API</h2><p><a class="link" target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/31948.html?spm=5176.208357.1107607.18.1e88390fheeEwP">https://help.aliyun.com/document_detail/31948.html?spm=5176.208357.1107607.18.1e88390fheeEwP<i class="fas fa-external-link-alt"></i></a></p>
+<h3 id="导包-1"><a href="#导包-1" class="headerlink" title="导包"></a>导包</h3><pre><code>&lt;dependency&gt;
+    &lt;groupId&gt;com.aliyun.oss&lt;/groupId&gt;
+    &lt;artifactId&gt;aliyun-sdk-oss&lt;/artifactId&gt;
+    &lt;version&gt;3.10.2&lt;/version&gt;
+&lt;/dependency&gt;
+//如果使用的是Java 9及以上的版本，则需要添加jaxb相关依赖。添加jaxb相关依赖示例代码如下：
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.xml.bind&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxb-api&lt;/artifactId&gt;
+    &lt;version&gt;2.3.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;javax.activation&lt;/groupId&gt;
+    &lt;artifactId&gt;activation&lt;/artifactId&gt;
+    &lt;version&gt;1.1.1&lt;/version&gt;
+&lt;/dependency&gt;
+&lt;!-- no more than 2.3.3--&gt;
+&lt;dependency&gt;
+    &lt;groupId&gt;org.glassfish.jaxb&lt;/groupId&gt;
+    &lt;artifactId&gt;jaxb-runtime&lt;/artifactId&gt;
+    &lt;version&gt;2.3.3&lt;/version&gt;
+&lt;/dependency&gt;
+</code></pre>
+<h3 id="初始化配置"><a href="#初始化配置" class="headerlink" title="初始化配置"></a>初始化配置</h3><p>application.properties</p>
+<pre><code class="xml">#阿里云 OSS
+#不同的服务器，地址不同   ==前面后面都不能加空格！！！！！！！！！！！！！！！！！1
+aliyun.oss.endpoint=oss-cn-beijing.aliyuncs.com
+aliyun.oss.accessKeyId=LTAI5t7hmUCakcQsHTSedsfE
+aliyun.oss.accessKeySecret=PwAZRnMx4p5GKFFF2ksdsaffdsiG
+#bucket可以在控制台创建，也可以使用java代码创建
+aliyun.oss.bucketName=greatbrook
+aliyun.oss.url=https://greatbrook.oss-cn-beijing.aliyuncs.com //文件存储地址
+</code></pre>
+<h3 id="以用户上传头像为例"><a href="#以用户上传头像为例" class="headerlink" title="以用户上传头像为例"></a>以用户上传头像为例</h3><p>头像链接headerUrl保存在user表中，用户在网页选择并上传头像时</p>
+<p>1.后端接收headerImage，并判断接收文件是否为jpg或png文件，不是则返回”文件格式不正确”。</p>
+<p>2.使用Thumbnails工具对传入的图片进行处理，压缩图片尺寸，并输出BufferedImage对象。</p>
+<p>3.根据配置创建文件上传客户端，使用OSSClientBuilder()。</p>
+<p>4.上传处理过后的图片inputStream，更改文件名。关闭客户端。</p>
+<p>5.将返回的用户头像路径写入user表。</p>
+<h4 id="用户表"><a href="#用户表" class="headerlink" title="用户表"></a>用户表</h4><h4 id="用户表-user"><a href="#用户表-user" class="headerlink" title="用户表 user"></a>用户表 user</h4><table>
+<thead>
+<tr>
+<th>字段</th>
+<th>类型</th>
+<th>备注</th>
+</tr>
+</thead>
+<tbody><tr>
+<td>id</td>
+<td>int</td>
+<td>主键、自增</td>
+</tr>
+<tr>
+<td>username</td>
+<td>varchar</td>
+<td>用户名，创建索引</td>
+</tr>
+<tr>
+<td>password</td>
+<td>varchar</td>
+<td>用户密码</td>
+</tr>
+<tr>
+<td>salt</td>
+<td>varchar</td>
+<td>加密盐值</td>
+</tr>
+<tr>
+<td>email</td>
+<td>varchar</td>
+<td>用户邮箱，创建索引</td>
+</tr>
+<tr>
+<td>type</td>
+<td>int</td>
+<td>用户类型：0 普通、1 管理员、2 版主</td>
+</tr>
+<tr>
+<td>status</td>
+<td>int</td>
+<td>用户状态：0 未激活、1 已激活</td>
+</tr>
+<tr>
+<td>activation_code</td>
+<td>varchar</td>
+<td>激活码</td>
+</tr>
+<tr>
+<td>header_url</td>
+<td>varchar</td>
+<td>用户头像地址</td>
+</tr>
+<tr>
+<td>create_time</td>
+<td>timestamp</td>
+<td>注册时间</td>
+</tr>
+</tbody></table>
+<h4 id="user-mapper-xml"><a href="#user-mapper-xml" class="headerlink" title="user_mapper.xml"></a>user_mapper.xml</h4><pre><code>&lt;update id="updateHeader"&gt;
+    update User set header_url = #{headerUrl} where id = #{id}
+&lt;/update&gt;
+</code></pre>
+<h4 id="UserMapper"><a href="#UserMapper" class="headerlink" title="UserMapper"></a>UserMapper</h4><pre><code>@Mapper
+public interface UserMapper {
+    User selectById(int id);
+    User selectByName(String username);
+    User selectByEmail(String email);
+    int insertUser(User user);
+    int updateStatus(int id,int status);
+    int updateHeader(int id, String headerUrl);
+    int updatePassword(int id, String password);
+}
+</code></pre>
+<h4 id="UserService"><a href="#UserService" class="headerlink" title="UserService"></a>UserService</h4><pre><code>@Service
+public class UserService{
+//更新头像  引入redis缓存user所以要先更新再清除缓存 不然会引起mysql和redis的冲突
+    public int updateHeader(int userId, String headerUrl) {
+        //return userMapper.updateHeader(userId, headerUrl);  mysql实现方式
+        int rows = userMapper.updateHeader(userId, headerUrl);
+        clearCache(userId);
+        return rows;
+
+    }
+}
+</code></pre>
+<h4 id="UserController"><a href="#UserController" class="headerlink" title="UserController"></a>UserController</h4><pre><code>    private static final Logger logger = LoggerFactory.getLogger(UserController.class);
+//导入相关路径
+    @Value("${community.path.upload}")
+    private String uploadPath;
+    @Value("${community.path.domain}")
+    private String domain;
+    @Value("${server.servlet.context-path}")
+    private String contextPath;
+    @Value("${aliyun.oss.endpoint}")
+    private String endpoint;
+    @Value("${aliyun.oss.accessKeyId}")
+    private String accessKeyId;
+    @Value("${aliyun.oss.accessKeySecret}")
+    private String accessKeySecret;
+    @Value("${aliyun.oss.bucketName}")
+    private String bucketName;
+    @Value("${aliyun.oss.url}")
+    private String url;
+    //文件存储目录
+    private String filedir = "header/";
+
+    @Autowired
+    private UserService userService;
+    @Autowired
+    private HostHolder hostHolder;
+//上传头像
+    @LoginRequired
+    @RequestMapping(path = "/upload",method = RequestMethod.POST)
+    public String uploadHeader(MultipartFile headerImage, Model model){
+          if (headerImage.isEmpty()){
+            model.addAttribute("error","您还没有选择图片！");
+            return "/site/setting";
+        } //如果图片为空返回error
+        String fileName = headerImage.getOriginalFilename();
+        String suffix = fileName.substring(fileName.lastIndexOf(".") + 1 );
+        //只允许上传.jpg和.png文件 方法很原始 不安全可以采用头文件判断 
+        if (StringUtils.isBlank(suffix)||!("jpg".equals(suffix)||"png".equals(suffix)||"jpeg".equalsIgnoreCase(suffix))){
+            model.addAttribute("error","文件格式不正确");
+            return "/site/setting";
+        }
+
+        try {
+            //生成随机文件名
+            fileName = CommunityUtil.generateUUID() + "." + suffix;
+           //Thumbnails处理图片
+            BufferedImage bi = Thumbnails.of(headerImage.getInputStream())
+                    .scale(0.25f)
+                    .asBufferedImage();
+            //图片处理为正方形
+            int init_width = bi.getWidth();
+            int init_height = bi.getHeight();
+            if (init_width != init_height){
+                int width_height = 0;
+                int x = 0;
+                int y = 0;
+                if (init_width &gt; init_height) {
+                    width_height = init_height;//原图是宽大于高的长方形
+                    x = (init_width-init_height)/2;
+                    y = 0;
+                } else if (init_width &lt; init_height) {
+                    width_height = init_width;//原图是高大于宽的长方形
+                    y = (init_height-init_width)/2;
+                    x = 0;
+                }
+                bi = bi.getSubimage(x, y, width_height, width_height);
+            }
+            ByteArrayOutputStream os = new ByteArrayOutputStream();
+            //ImageIO.write(image, "JPEG", out);
+            ImageIO.write(bi, suffix, os); //图片写入到 ImageOutputStream 和之前格式一致
+           InputStream inputStream = new ByteArrayInputStream(os.toByteArray());
+
+            //文件上传
+            //设置文件路径和名称
+            String fileUrl = filedir + fileName;
+            //上传文件
+            //阿里云文件上传客户端  创建OSSClient实例。
+            OSS client = new OSSClientBuilder().build(endpoint, accessKeyId, accessKeySecret);
+            //调用oss方法实现上传
+            //参数1：Bucket名称
+            //参数2：上传到oss的文件路径和文件名
+            //参数3：上传文件输入流
+            client.putObject(bucketName, fileUrl, inputStream);
+            //删除旧头像
+            User user = hostHolder.getUser();
+
+            if ( user.getHeaderUrl() != null){
+                String[] objectNames = user.getHeaderUrl().split("/");
+                String objectName = filedir + objectNames[4];
+                if (objectName != null) {
+                    client.deleteObject(bucketName, objectName);
+                    logger.info("删除旧头像成功"+objectName);
+                }
+            }
+
+            // 关闭OSSClient
+            client.shutdown();
+            //更新当前用户头像的路径（web访问 Http://loacalhost:8080/community/user/header/xxx.png）
+            User user = hostHolder.getUser();
+            //String headerUrl = domain + contextPath +"/user/header/" +fileName;
+            String headerUrl = url + "/" + fileUrl;
+            userService.updateHeader(user.getId(),headerUrl);
+     
+            return "redirect:/index";
+        } catch (IOException e) {
+            model.addAttribute("error",e.getMessage());
+            return "/site/setting";
+        }
+}
+</code></pre>
+<h2 id="测试："><a href="#测试：" class="headerlink" title="测试："></a>测试：</h2><p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29mFFJ4BqEqPIIqph/root/content"></p>
+<p>原图片2.07MB</p>
+<p>上传成功并获取返回链接写入user表</p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29mKz81o6_SPTQHZ4/root/content"></p>
+<p><img src="https://api.onedrive.com/v1.0/shares/s!AtrhubmDW-n29mMsnWVsGGXKKw6m/root/content"></p>
+<p>查看OSS中图片确实上传成功 且图片是压缩过后的21.97kb</p>
+<p>而且Thumbnails的一系列处理也杜绝了shell等文件通过修改后缀名为jpg和png等格式绕过检测上传到服务器的问题。</p>
+<p>以上就是对图片文件处理并上传到阿里云OSS的简单介绍，如果有疑问或者纠错可以通过邮件与我联系。</p>
+<blockquote>
+<p>引用：</p>
+<p><a class="link" target="_blank" rel="noopener" href="https://www.shangmayuan.com/a/24fb08cae151401f973f0f60.html">https://www.shangmayuan.com/a/24fb08cae151401f973f0f60.html<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://blog.csdn.net/qq_41950447/article/details/115962254">https://blog.csdn.net/qq_41950447/article/details/115962254<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://bbs.csdn.net/topics/392077729?list=lz">https://bbs.csdn.net/topics/392077729?list=lz<i class="fas fa-external-link-alt"></i></a></p>
+<p><a class="link" target="_blank" rel="noopener" href="https://help.aliyun.com/document_detail/32008.html?spm=5176.208357.1107607.21.331b390f9Z4W5C">https://help.aliyun.com/document_detail/32008.html?spm=5176.208357.1107607.21.331b390f9Z4W5C<i class="fas fa-external-link-alt"></i></a></p>
+</blockquote>
+
+        </div>
+
+        
+            <div class="post-copyright-info">
+                <div class="article-copyright-info-container">
+    <ul>
+        <li>Post title：图片文件压缩并上传至阿里云OSS</li>
+        <li>Post author：greatBrook</li>
+        <li>Create time：2021-06-22 14:07:51</li>
+        <li>
+            Post link：https://brookdeng.github.io/2021/06/22/图片文件压缩并上传至阿里云OSS/
+        </li>
+        <li>
+            Copyright Notice：All articles in this blog are licensed under <a class="license" target="_blank" rel="noopener" href="https://creativecommons.org/licenses/by-nc-sa/4.0/deed.zh">BY-NC-SA</a> unless stating additionally.
+        </li>
+    </ul>
+</div>
+
+            </div>
+        
+
+        
+            <div class="article-nav">
+                
+                    <div class="article-prev">
+                        <a class="prev"
+                           rel="prev"
+                           href="/2021/08/19/github-hexo%E6%90%AD%E5%BB%BA%E5%8D%9A%E5%AE%A2/"
+                        >
+                            <span class="left arrow-icon flex-center">
+                              <i class="fas fa-chevron-left"></i>
+                            </span>
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">github hexo搭建博客</span>
+                                <span class="post-nav-item">Prev posts</span>
+                            </span>
+                        </a>
+                    </div>
+                
+                
+                    <div class="article-next">
+                        <a class="next"
+                           rel="next"
+                           href="/2021/06/20/%E8%AE%BA%E5%9D%9B%E9%A1%B9%E7%9B%AE%E6%80%BB%E7%BB%93/"
+                        >
+                            <span class="title flex-center">
+                                <span class="post-nav-title-item">论坛项目总结</span>
+                                <span class="post-nav-item">Next posts</span>
+                            </span>
+                            <span class="right arrow-icon flex-center">
+                              <i class="fas fa-chevron-right"></i>
+                            </span>
+                        </a>
+                    </div>
+                
+            </div>
+        
+
+        
+            <div class="comment-container">
+                <div class="comments-container">
+    <div id="comment-anchor"></div>
+    <div class="comment-area-title">
+        <i class="fas fa-comments">&nbsp;Comments</i>
+    </div>
+    
+
+        
+            
+    <div class="valine-container">
+        <script data-pjax
+                src="//cdn.jsdelivr.net/npm/valine@latest/dist/Valine.min.js"></script>
+        <div id="vcomments"></div>
+        <script data-pjax>
+            function loadValine() {
+                new Valine({
+                    el: '#vcomments',
+                    appId: 'ED1l4bFn1KPCAPEcbxixj8Px-9Nh9j0Va',
+                    appKey: 'IjQK1mCRR6zqIQgEpCGKUEBW',
+                    meta: ['nick', 'mail', 'link'],
+                    avatar: 'wavatar',
+                    enableQQ: true,
+                    placeholder: '尽情吐槽吧~QAQ~',
+                    lang: 'zh-tw,en,default'.toLowerCase()
+                });
+
+                function getAuthor(language) {
+                    switch (language) {
+                        case 'en':
+                            return 'Author';
+                        case 'zh-CN':
+                            return '博主';
+                        default:
+                            return 'Master';
+                    }
+                }
+
+                // Add "Author" identify
+                const getValineDomTimer = setInterval(() => {
+                    const vcards = document.querySelectorAll('#vcomments .vcards .vcard');
+                    if (vcards.length > 0) {
+                        let author = 'greatBrook';
+
+                        if (author) {
+                            for (let vcard of vcards) {
+                                const vnick_dom = vcard.querySelector('.vhead .vnick');
+                                const vnick = vnick_dom.innerHTML;
+                                if (vnick === author) {
+                                    vnick_dom.innerHTML = `${vnick} <span class="author">${getAuthor(KEEP.hexo_config.language)}</span>`
+                                }
+                            }
+                        }
+                        clearInterval(getValineDomTimer);
+                    } else {
+                        clearInterval(getValineDomTimer);
+                    }
+                }, 2000);
+            }
+
+            if ('true') {
+                const loadValineTimeout = setTimeout(() => {
+                    loadValine();
+                    clearTimeout(loadValineTimeout);
+                }, 1000);
+            } else {
+                window.addEventListener('DOMContentLoaded', loadValine);
+            }
+        </script>
+    </div>
+
+
+
+        
+    
+</div>
+
+            </div>
+        
+    </div>
+</div>
+
+
+                
+            </div>
+
+        </div>
+
+        <div class="page-main-content-bottom">
+            <footer class="footer">
+    <div class="info-container">
+        <div class="copyright-info info-item">
+            &copy;
+            
+              <span>2017</span>&nbsp;-&nbsp;
+            
+            2022&nbsp;<i class="fas fa-heart icon-animate"></i>&nbsp;<a href="/">greatBrook</a>
+        </div>
+        
+            <script async data-pjax src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+            <div class="website-count info-item">
+                
+                    <span id="busuanzi_container_site_uv">
+                        Visitor Count&nbsp;<span id="busuanzi_value_site_uv"></span>&ensp;
+                    </span>
+                
+                
+                    <span id="busuanzi_container_site_pv">
+                        Totalview&nbsp;<span id="busuanzi_value_site_pv"></span>
+                    </span>
+                
+            </div>
+        
+        <div class="theme-info info-item">
+            Powered by <a target="_blank" href="https://hexo.io">Hexo</a>&nbsp;|&nbsp;Theme&nbsp;<a class="theme-version" target="_blank" href="https://github.com/XPoet/hexo-theme-keep">Keep v3.4.3</a>
+        </div>
+        
+    </div>
+</footer>
+
+        </div>
+    </div>
+
+    
+        <div class="post-tools">
+            <div class="post-tools-container">
+    <ul class="tools-list">
+        <!-- TOC aside toggle -->
+        
+            <li class="tools-item page-aside-toggle">
+                <i class="fas fa-outdent"></i>
+            </li>
+        
+
+        <!-- go comment -->
+        
+            <li class="go-comment">
+                <i class="fas fa-comment"></i>
+            </li>
+        
+    </ul>
+</div>
+
+        </div>
+    
+
+    <div class="right-bottom-side-tools">
+        <div class="side-tools-container">
+    <ul class="side-tools-list">
+        <li class="tools-item tool-font-adjust-plus flex-center">
+            <i class="fas fa-search-plus"></i>
+        </li>
+
+        <li class="tools-item tool-font-adjust-minus flex-center">
+            <i class="fas fa-search-minus"></i>
+        </li>
+
+        <li class="tools-item tool-expand-width flex-center">
+            <i class="fas fa-arrows-alt-h"></i>
+        </li>
+
+        <li class="tools-item tool-dark-light-toggle flex-center">
+            <i class="fas fa-moon"></i>
+        </li>
+
+        <!-- rss -->
+        
+
+        
+
+        <li class="tools-item tool-scroll-to-bottom flex-center">
+            <i class="fas fa-arrow-down"></i>
+        </li>
+    </ul>
+
+    <ul class="exposed-tools-list">
+        <li class="tools-item tool-toggle-show flex-center">
+            <i class="fas fa-cog fa-spin"></i>
+        </li>
+        
+            <li class="tools-item tool-scroll-to-top flex-center">
+                <i class="arrow-up fas fa-arrow-up"></i>
+                <span class="percent"></span>
+            </li>
+        
+    </ul>
+</div>
+
+    </div>
+
+    
+        <aside class="page-aside">
+            <div class="post-toc-wrap">
+    <div class="post-toc">
+        <ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#%E5%9B%BE%E7%89%87%E5%A4%84%E7%90%86"><span class="nav-text">图片处理</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#Thumbnails"><span class="nav-text">Thumbnails</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BD%BF%E7%94%A8%E6%AD%A5%E9%AA%A4"><span class="nav-text">使用步骤</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E5%AF%BC%E5%8C%85"><span class="nav-text">导包</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E6%96%B9%E6%B3%95"><span class="nav-text">方法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#1-%E8%AF%BB%E5%85%A5%E6%BA%90%E5%9B%BE%E7%89%87"><span class="nav-text">1.读入源图片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#2-%E8%AE%BE%E7%BD%AE%E5%A4%A7%E5%B0%8F%EF%BC%8C%E6%8C%89%E6%AF%94%E4%BE%8B%E6%88%96%E8%80%85%E6%8B%89%E4%BC%B8"><span class="nav-text">2.设置大小，按比例或者拉伸</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#3-%E5%89%AA%E8%A3%81"><span class="nav-text">3.剪裁</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#4-%E6%97%8B%E8%BD%AC"><span class="nav-text">4.旋转</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#5-%E6%B0%B4%E5%8D%B0"><span class="nav-text">5.水印</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#6-%E8%B4%A8%E9%87%8F"><span class="nav-text">6.质量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#7-%E8%BE%93%E5%87%BA%E6%A0%BC%E5%BC%8F"><span class="nav-text">7.输出格式</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#8-%E8%BE%93%E5%87%BA%E5%9B%BE%E7%89%87"><span class="nav-text">8.输出图片</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#%E7%A4%BA%E4%BE%8B%EF%BC%9A"><span class="nav-text">示例：</span></a></li></ol></li></ol></li></ol></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#%E9%98%BF%E9%87%8C%E4%BA%91OSS%E6%96%87%E4%BB%B6%E4%B8%8A%E4%BC%A0"><span class="nav-text">阿里云OSS文件上传</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#%E7%AE%80%E4%BB%8B"><span class="nav-text">简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B3%A8%E5%86%8C%E5%BC%80%E9%80%9A%E7%95%A5"><span class="nav-text">注册开通略</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E9%85%8D%E7%BD%AEOSS"><span class="nav-text">配置OSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E5%AD%A6%E4%B9%A0%E4%BD%BF%E7%94%A8API"><span class="nav-text">学习使用API</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%AF%BC%E5%8C%85-1"><span class="nav-text">导包</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E5%88%9D%E5%A7%8B%E5%8C%96%E9%85%8D%E7%BD%AE"><span class="nav-text">初始化配置</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#%E4%BB%A5%E7%94%A8%E6%88%B7%E4%B8%8A%E4%BC%A0%E5%A4%B4%E5%83%8F%E4%B8%BA%E4%BE%8B"><span class="nav-text">以用户上传头像为例</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%A1%A8"><span class="nav-text">用户表</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#%E7%94%A8%E6%88%B7%E8%A1%A8-user"><span class="nav-text">用户表 user</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#user-mapper-xml"><span class="nav-text">user_mapper.xml</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UserMapper"><span class="nav-text">UserMapper</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UserService"><span class="nav-text">UserService</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#UserController"><span class="nav-text">UserController</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#%E6%B5%8B%E8%AF%95%EF%BC%9A"><span class="nav-text">测试：</span></a></li></ol></li></ol>
+    </div>
+</div>
+        </aside>
+    
+
+    <div class="image-viewer-container">
+    <img src="">
+</div>
+
+
+    
+        <div class="search-pop-overlay">
+    <div class="popup search-popup">
+        <div class="search-header">
+          <span class="search-input-field-pre">
+            <i class="fas fa-keyboard"></i>
+          </span>
+            <div class="search-input-container">
+                <input autocomplete="off"
+                       autocorrect="off"
+                       autocapitalize="off"
+                       placeholder="Search..."
+                       spellcheck="false"
+                       type="search"
+                       class="search-input"
+                >
+            </div>
+            <span class="popup-btn-close">
+                <i class="fas fa-times"></i>
+            </span>
+        </div>
+        <div id="search-result">
+            <div id="no-result">
+                <i class="fas fa-spinner fa-pulse fa-5x fa-fw"></i>
+            </div>
+        </div>
+    </div>
+</div>
+
+    
+
+</main>
+
+
+
+<script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/utils.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/main.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/header-shrink.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/back2top.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/dark-light-toggle.js"></script>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/local-search.js"></script>
+
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/code-copy.js"></script>
+
+
+
+
+<div class="post-scripts pjax">
+    
+        <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/left-side-toggle.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/anime.min.js"></script><script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/toc.js"></script>
+    
+</div>
+
+
+    <script src="//cdn.jsdelivr.net/npm/hexo-theme-keep@3.4.3/source/js/libs/pjax.min.js"></script>
+<script>
+    window.addEventListener('DOMContentLoaded', () => {
+        window.pjax = new Pjax({
+            selectors: [
+                'head title',
+                '.page-container',
+                '.pjax'
+            ],
+            history: true,
+            debug: false,
+            cacheBust: false,
+            timeout: 0,
+            analytics: false,
+            currentUrlFullReload: false,
+            scrollRestoration: false,
+            // scrollTo: true,
+        });
+
+        document.addEventListener('pjax:send', () => {
+            KEEP.utils.pjaxProgressBarStart();
+        });
+
+        document.addEventListener('pjax:complete', () => {
+            KEEP.utils.pjaxProgressBarEnd();
+            window.pjax.executeScripts(document.querySelectorAll('script[data-pjax], .pjax script'));
+            KEEP.refresh();
+        });
+    });
+</script>
+
+
+
+<script type="text/x-mathjax-config">
+    MathJax.Hub.Config({
+        tex2jax: {
+            inlineMath: [ ["$","$"], ["\\(","\\)"] ],
+            skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code'],
+            processEscapes: true
+        }
+    });
+    MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax();
+        for (var i = 0; i < all.length; ++i)
+            all[i].SourceElement().parentNode.className += ' has-jax';
+    });
+</script>
+<script src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</body>
+</html>
